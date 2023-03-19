@@ -31,7 +31,6 @@ services:
       - ./miner/files/data/datadir:/root/files/datadir:rw
       - ./miner/files/keystore:/root/files/keystore:rw
       - ./miner/scripts/entrypoint_enode_miner.sh:/root/scripts/entrypoint.sh:ro
-      - ./miner/scripts/mineWhenNeeded.js:/root/scripts/mineWhenNeeded.js:ro
     ports:
       - "30303:30303"
       - "30303:30303/udp"
