@@ -1,0 +1,38 @@
+version: '3.7'
+
+services:
+  geth-client:
+    hostname: geth-client
+    image: ethereum/client-go:v1.11.4
+    environment:
+      - NETWORK_ID=556719
+    entrypoint: ["/bin/sh","/root/scripts/entrypoint.sh"]
+    volumes:
+      - ./client/files/genesis.json:/root/files/genesis.json:ro
+      - ./client/files/password:/root/files/password:ro
+      - ./client/files/data/datadir:/root/files/datadir:rw
+      - ./client/files/keystore:/root/files/keystore:rw
+      - ./client/scripts/entrypoint_enode_no_mining.sh:/root/scripts/entrypoint.sh:ro
+    ports:
+      - "30304:30303"
+      - "30304:30303/udp"
+      - "8546:8545"
+
+  geth-miner:
+    hostname: geth-miner
+    image: ethereum/client-go:v1.11.4
+    environment:
+      - NETWORK_ID=556719
+      - ACCOUNT=8a3f8237665609dce3886fc863101a34c34c71e7
+    entrypoint: ["/bin/sh","/root/scripts/entrypoint.sh"]
+    volumes:
+      - ./miner/files/genesis.json:/root/files/genesis.json:ro
+      - ./miner/files/password:/root/files/password:ro
+      - ./miner/files/data/datadir:/root/files/datadir:rw
+      - ./miner/files/keystore:/root/files/keystore:rw
+      - ./miner/scripts/entrypoint_enode_miner.sh:/root/scripts/entrypoint.sh:ro
+      - ./miner/scripts/mineWhenNeeded.js:/root/scripts/mineWhenNeeded.js:ro
+    ports:
+      - "30303:30303"
+      - "30303:30303/udp"
+      - "8545:8545"
